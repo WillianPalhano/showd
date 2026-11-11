@@ -1,0 +1,83 @@
+<main class="search-page">
+  <header class="search-header">
+    <h1 class="brand">Showd</h1>
+
+    <search class="search-box">
+      <label for="search-input" class="search-label">Buscar série</label>
+      <!-- SUA VEZ (passo 7): dê um nome ao input (#campo) e use (input) para atualizar o signal query -->
+      <input
+        #campo
+        id="search-input"
+        type="search"
+        class="search-input"
+        placeholder="Ex.: Dark, Ruptura, The Bear..."
+        autocomplete="off"
+        (input)="valueSearch.set(campo.value.trim())"
+      />
+    </search>
+  </header>
+
+  <!-- Área de mensagens: aria-live faz o leitor de tela anunciar quando o texto muda -->
+  <section class="search-status" aria-live="polite">
+    <!-- SUA VEZ (passo 8): cada bloco abaixo é um estado. Envolva com @if / @else if / @else na ordem certa. -->
+    @if (resultado.value() == null) {
+      <!-- ESTADO: inicial -->
+      <p class="status-message">Digite o nome de uma série para começar.</p>
+    }
+    @else if (resultado.value() != null) {
+      <p class="status-message">Encontrado {{ resultado.value()?.results?.length }} resultados.</p>
+    }
+    @else if (resultado.isLoading()) {
+      <!-- ESTADO: carregando -->
+      <p class="status-message">
+        <span class="spinner" aria-hidden="true"></span>
+        Buscando...
+      </p>
+    } 
+    @else if (resultado.value()?.results == []) {
+      <!-- ESTADO: sem resultados (pode virar o @empty do @for, decisão sua) -->
+      <p class="status-message">Nenhuma série encontrada.</p>
+    } 
+    @else if (resultado.error() !== null) {
+      <!-- ESTADO: erro -->
+      <p class="status-message status-message--error" role="alert">
+        Não foi possível buscar agora. Tente de novo em instantes.
+      </p>
+    } 
+
+
+  </section>
+
+  @if (resultado.value() != null) {
+    
+    <!-- ESTADO: resultados -->
+    <ul class="results-grid">
+    @for (item of resultado.value()?.results; track item.id) {
+      <!-- SUA VEZ (passo 8): repita o <li> com @for (... ; track ...) -->
+      <li class="series-card">
+        <!-- SUA VEZ: mostre a <img> quando houver poster_path, senão o placeholder -->
+         @if (item.poster_path) {
+          <img
+            class="series-poster"
+            [src]="env.tmdbImageUrl + '/w342' + item.poster_path"
+            alt="Pôster de NOME_DA_SERIE"
+            loading="lazy"
+            width="342"
+            height="513"
+          />
+         } @else {
+           <div class="series-poster series-poster--empty" aria-hidden="true">
+             <span>Sem pôster</span>
+           </div>
+         }
+        
+  
+        <div class="series-info">
+          <h2 class="series-title">{{ item.name }}</h2>
+          <p class="series-year">{{ item.first_air_date.substring(0, 4)}}</p>
+        </div>
+      </li>
+    }
+  </ul>
+  }
+</main>

@@ -1,37 +1,44 @@
 # Showd
 
-Uma aplicação que armazena séries que você tem interesse, sua avaliação, watchlist e interação com amigos sobre o que tem visto. Feito para amigos e indicações. Tive essa idéia com a morte de um app igual recente e com a necessidade de manter um diário com as séries que tenho assistido.
+Uma aplicação para registrar as séries que você assiste: avaliações, watchlist e interação com amigos sobre o que cada um tem visto. Feita para amigos e indicações. A ideia surgiu com o fim recente de um app parecido e com a vontade de manter um diário das séries que tenho assistido.
 
-Esse projeto foi inicializado na versão 21.2.13 do Angular.
+## Stack
 
-## Development server
+- [Angular](https://angular.dev/) 21 (componentes standalone, signals, zoneless)
+- [Vitest](https://vitest.dev/) para testes unitários
+- SSR instalado, mas todas as rotas renderizam no cliente por enquanto — o porquê está no [ADR 0001](docs/adr/0001-estrategia-de-renderizacao.md)
+- Dados de séries: [TMDB](https://www.themoviedb.org/)
 
-To start a local development server, run:
+## Pré-requisitos
 
-```bash
-ng serve
-```
+- [Node.js](https://nodejs.org/) 20.19.4
+- npm (já vem com o Node)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Como rodar
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Copiar "environment.example.ts" para os arquivos "environment.ts" e "environment.development.ts" e colar o seu token do TMDB.
 
 ```bash
-ng test
+npm install
+npm start
 ```
 
-## Additional Resources
+Depois, abra `http://localhost:4200/` no navegador. A página recarrega sozinha quando algum arquivo é alterado.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Build
+
+```bash
+npm run build
+```
+
+Os arquivos gerados ficam em `dist/`.
+
+## Testes
+
+```bash
+npm test
+```
+
+## Decisões de arquitetura
+
+As decisões relevantes do projeto ficam registradas em [`docs/adr/`](docs/adr/).
